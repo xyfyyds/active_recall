@@ -7,7 +7,7 @@ We study **Proactive Task Execution (PTE)**: whether an LLM can actively recall 
 <p align="center">
   <img src="assert/motivation.png" alt="Proactive recall motivation and preliminary study" width="100%">
 </p>
-<p align="center"><em>Proactive recall motivation and preliminary study.</em></p>
+<p align="center"><em>The left shows the comparison between vanilla dialogue systems and proactive-recall dialogue systems. The right presents the results of preliminary studies.</em></p>
 
 ## Motivation
 
