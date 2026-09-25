@@ -63,9 +63,9 @@ The following example illustrates how different systems respond when newly obser
 ## Repository Structure
 
 ```text
+SGD_derived_data/        # SGD-derived conversations
+MultiWOZ_derived_data/   # MultiWOZ-derived conversations
 cross_session_data/      # Cross-session conversations
 if_then_data/            # Conditional-operation conversations
-MultiWOZ_derived_data/   # MultiWOZ-derived conversations
-SGD_derived_data/        # SGD-derived conversations
 data_generation/         # Data-construction scripts and prompts
 ```
