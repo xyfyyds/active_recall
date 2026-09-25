@@ -1,0 +1,125 @@
+You are given:
+1. a task description,
+2. a bridge topic that has already been chosen,
+3. a short description of why this topic is a good off-task bridge,
+4. the dialogue segment immediately before an insertion point,
+5. the dialogue segment immediately after that insertion point,
+6. a target minimum number of turns.
+
+Your objective is to generate an intermediate conversational bridge to be inserted between the two adjacent segments.
+
+## Core requirement
+This filler dialogue must be driven mainly by the given bridge topic, not by the main task.
+
+The purpose of the filler is to create a natural detour:
+- it should feel like the conversation temporarily drifts to the bridge topic,
+- stays there for a while in a natural way,
+- and then gradually returns so that the next segment feels coherent.
+
+## Input
+- **Task**: the overall high-level task
+- **Bridge Topic**: the off-task conversational direction that must shape the filler
+- **Bridge Topic Description**: why this topic is a suitable detour
+- **Previous Segment**: the segment immediately before the insertion point
+- **Next Segment**: the segment immediately after the insertion point
+- **Target Length**: the minimum number of turns to generate
+
+## Generation objectives
+
+1. **Bridge-topic-centered filler**
+   - The generated filler should primarily revolve around the given bridge topic.
+   - The main task should stay in the background.
+   - Do not keep talking about the task.
+
+2. **Natural detour**
+   - The filler should sound like a realistic side conversation.
+   - It may include small elaborations, reactions, preferences, clarifications, anecdotes, or situational remarks related to the bridge topic.
+   - It should feel human and spontaneous, not mechanically inserted.
+
+3. **Controlled deviation**
+   - The filler should clearly deviate from the main task.
+   - However, it must still remain plausible in the same conversation.
+   - It should not feel like an unrelated new task or a completely separate conversation.
+
+4. **Natural transitions**
+   - The first one or two turns should connect naturally from the previous segment.
+   - The last one or two turns should make the return to the next segment feel smooth and unsurprising.
+   - The middle part can drift more fully into the bridge topic.
+
+5. **Do not over-advance the original task**
+   - Do not use the filler mainly to collect more required info for the task.
+   - Do not make the filler simply another hidden task segment.
+   - Do not repeatedly mention task details.
+
+6. **Do not prematurely solve the main task**
+   - Unless explicitly implied by the surrounding data, do not finish or resolve the original task in the filler.
+   - The filler is a detour, not the main task completion segment.
+
+7. **Strict turn alternation**
+   - The filler must strictly alternate:
+     - user
+     - assistant
+     - user
+     - assistant
+     and so on.
+   - No two consecutive turns from the same speaker.
+
+8. **Length control**
+   - Generate at least the target number of turns.
+
+9. **Non-redundancy**
+   - Do not copy full or near-full utterances from the previous or next segment.
+   - Do not paraphrase them excessively.
+   - Add genuinely new conversational content.
+
+10. **No information leakage from adjacent segments**
+   - Do not reveal, mention, or imply specific information that appears in the previous or next segment.
+   - In particular, do not expose details that are only mentioned later in the next segment.
+   - Even if such information is visible in the input segments, do not reuse it unless it is already explicitly established as common knowledge within the filler conversation itself.
+   - Avoid both direct leakage and indirect leakage through paraphrase, hinting, partial mention, or highly specific reference.
+
+11. **Language consistency**
+   - Keep the same language as the surrounding dialogue.
+
+## Output format
+Return a JSON object with exactly the following format:
+
+{
+  "conversation": [
+    {
+      "speaker": "user",
+      "text": "..."
+    },
+    {
+      "speaker": "assistant",
+      "text": "..."
+    }
+  ]
+}
+
+## Output constraints
+- Only output the generated `conversation`.
+- Each turn must contain exactly:
+  - `speaker`
+  - `text`
+- `speaker` must be either `"user"` or `"assistant"`.
+- The turns must strictly alternate between `user` and `assistant`.
+- Do not output explanations, comments, or extra metadata.
+
+## Task
+{task}
+
+## Bridge Topic
+{bridge_topic}
+
+## Bridge Topic Description
+{bridge_topic_desc}
+
+## Previous Segment
+{prev_segment_json}
+
+## Next Segment
+{next_segment_json}
+
+## Target Length
+{target_turns}

@@ -1,0 +1,93 @@
+You are given a task-oriented dialogue sample.
+
+Your objective is to rewrite the dialogue into a more natural, realistic, and human-like conversation while preserving the overall task progression and the stage structure indicated by `segment_id`.
+
+## Input
+The input consists of:
+- **Task**: a high-level task description
+- **Required Information**: the information fields ultimately needed for task completion
+- **Original Conversation**: a dialogue whose turns already contain `speaker`, `text`, and `segment_id`
+
+## Rewriting Goals
+Produce a rewritten conversation that satisfies the following goals:
+
+1. **Natural Human Dialogue**
+   - The rewritten dialogue should sound like a realistic conversation between a user and an assistant.
+   - Avoid rigid slot-filling behavior.
+   - Avoid repetitive acknowledgements such as "okay", "got it", "sure" unless they are genuinely useful.
+
+2. **Gradual Information Revelation**
+   - The user should reveal information gradually over the course of the conversation.
+   - Do not front-load the full task specification at the beginning.
+   - Do not make the user state all required information directly and consecutively.
+   - Important information may emerge naturally while the user is discussing related context, preferences, uncertainty, revisions, or other conversational content.
+
+3. **User as the Primary Source of Key Information**
+   - Important task-related information should primarily come from the user.
+   - The assistant may respond, guide gently, react, summarize lightly, or ask occasional natural follow-up questions, but should not serve as the first source of key required information.
+
+4. **Stage Consistency**
+   - Preserve the overall stage structure indicated by `segment_id`.
+   - The rewritten conversation should still progress through the same coarse phases.
+   - Each turn in the rewritten conversation must contain a `segment_id`.
+   - `segment_id` values must remain non-decreasing.
+
+5. **Balanced Task Progression**
+   - Each stage should usually contribute only limited new progress.
+   - Avoid making one early stage contain the full task specification.
+   - Avoid later stages becoming mostly redundant repetition.
+
+6. **Conversational Plausibility**
+   - The user may hesitate, revise preferences, add details later, mention relevant information indirectly, or bring up information in a more casual way.
+   - The assistant should sound helpful and conversational rather than procedural or system-like.
+   - You may add or remove turns if needed, as long as the rewritten conversation remains coherent and aligned with the same overall task.
+
+## Rewriting Guidelines
+When rewriting:
+- Do not use backend, tool, database, or system-query style language.
+- Do not make the assistant repeatedly restate the user's information unless necessary.
+- Prefer realistic discourse moves such as:
+  - users mentioning details incrementally,
+  - users correcting themselves,
+  - users introducing relevant constraints indirectly,
+  - assistants reacting naturally and helping the conversation move forward.
+- Preserve the same language as the original conversation.
+
+## Output Format
+Return a JSON object with exactly the following format:
+
+{
+  "conversation": [
+    {
+      "speaker": "user",
+      "text": "...",
+      "segment_id": 1
+    },
+    {
+      "speaker": "assistant",
+      "text": "...",
+      "segment_id": 1
+    }
+  ]
+}
+
+## Output Constraints
+- Only output the rewritten `conversation`.
+- Each turn must contain exactly:
+  - `speaker`
+  - `text`
+  - `segment_id`
+- `speaker` must be either `"user"` or `"assistant"`.
+- `segment_id` must be a positive integer.
+- `segment_id` must be non-decreasing across turns.
+- Do not output explanations, comments, or extra metadata.
+- Preserve the original task intent and overall information trajectory, but make the dialogue substantially more natural.
+
+## Task
+{task}
+
+## Required Information
+{required_info_json}
+
+## Original Conversation
+{conversation_json}

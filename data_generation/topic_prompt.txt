@@ -1,0 +1,72 @@
+You are given:
+1. a task description,
+2. the dialogue segment immediately before an insertion point,
+3. the dialogue segment immediately after that insertion point.
+
+Your job is NOT to generate the filler dialogue yet.
+
+Your job is to propose a natural intermediate topic that can be used to create a temporary side conversation between the two segments.
+
+## Goal
+Generate:
+1. a `bridge_topic`,
+2. a `short_description`.
+
+The bridge topic must:
+- clearly deviate from the core task,
+- not be a direct continuation of the task,
+- not be a substep of the task,
+- not be a clarification question for the task,
+- not repeat required information,
+- but still be plausible as a temporary side track that could naturally occur between the two segments.
+
+## Important constraints
+
+1. **The topic must deviate from the main task**
+   - It should move the conversation away from the immediate task.
+   - It should feel like a side topic, interruption, tangent, or small detour.
+   - It must NOT directly advance task completion.
+
+2. **The topic must still work as a bridge**
+   - It cannot be completely random.
+   - It should be loosely motivated by the surrounding context, wording, situation, user state, or something naturally implied nearby.
+   - It should make it possible to return naturally into the next segment later.
+
+3. **The topic should sound natural in everyday conversation**
+   - It can be about a temporary personal concern, a side preference, a situational remark, a passing association, a minor complaint, a nearby anecdote, or a related but non-task-oriented conversational drift.
+   - It should sound like something a user might suddenly bring up, or something that could emerge naturally in conversation.
+
+4. **Avoid task-centered topics**
+   Do NOT produce a topic that is:
+   - a reformulation of the same task,
+   - another way of asking for the same required info,
+   - more planning for the same task,
+   - direct follow-up information gathering for the same task,
+   - a summary of what still needs to be done for the task.
+
+5. **Keep it concise and reusable**
+   - `bridge_topic` should be short: one phrase or one sentence.
+   - `short_description` should briefly explain why this topic is a good off-task but coherent bridge.
+
+## Output format
+Return a JSON object with exactly this format:
+
+{
+  "bridge_topic": "...",
+  "short_description": "..."
+}
+
+## Output constraints
+- Output JSON only.
+- Do not output filler dialogue.
+- Do not output explanations outside the JSON.
+- Keep the same language as the surrounding dialogue.
+
+## Task
+{task}
+
+## Previous Segment
+{prev_segment_json}
+
+## Next Segment
+{next_segment_json}
